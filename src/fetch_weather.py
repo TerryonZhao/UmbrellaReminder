@@ -1,10 +1,7 @@
 import requests
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import json
-from datetime import datetime
 import os
+
 
 error = "Error | "
 info = "Info | "
@@ -15,7 +12,10 @@ def load_config():
     :return dict: The configuration settings.
     """
     try:
-        with open('config.json', 'r', encoding='utf-8') as f:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(current_dir, '..', 'config.json')
+        
+        with open(config_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
         print(f"{error} Config file not found.")
@@ -23,7 +23,8 @@ def load_config():
     except json.JSONDecodeError:
         print(f"{error} Error decoding JSON from config.json.")
         return None
-    
+
+
 def get_weather(config):
     """Fetch weather information.
 
@@ -37,12 +38,12 @@ def get_weather(config):
     units = config["weather"]["units"]
 
     url = (
-    f"https://api.openweathermap.org/data/3.0/onecall"
-    f"?lat={lat}&lon={lon}"
-    f"&exclude={exclude}"
-    f"&units={units}"
-    f"&lang={lang}"
-    f"&appid={api_key}"
+        f"https://api.openweathermap.org/data/3.0/onecall"
+        f"?lat={lat}&lon={lon}"
+        f"&exclude={exclude}"
+        f"&units={units}"
+        f"&lang={lang}"
+        f"&appid={api_key}"
     )
 
     try:
@@ -53,16 +54,22 @@ def get_weather(config):
         print(f"{error} Failed to fetch weather data.")
         return None
 
-def main():
-    """Main function to run the umbrella reminder."""
+def fetch():
+    """Fetch weather data"""
     print("Step 1: Load configuration")
     config = load_config()
     print("="*50)
 
     print("Step 2: Fetch weather data")
-    weather_data = get_weather(config)
+    daily_data = get_weather(config)
     print("="*50)
-    print(weather_data)
+    return daily_data
 
 if __name__ == "__main__":
-    main()
+    print("Step 1: Load configuration")
+    config = load_config()
+    print("="*50)
+
+    print("Step 2: Fetch weather data")
+    daily_data = get_weather(config)
+    print(daily_data)
