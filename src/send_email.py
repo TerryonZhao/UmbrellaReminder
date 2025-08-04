@@ -111,9 +111,7 @@ def send_rain_email(rain_info: Dict) -> bool:
         print(f"{info}Rendering successful.")
         config = load_config()
         subject = f"降雨提醒 - {worst_level.capitalize()} Rain"
-        smtp_send(config, subject, html_content)
-        print(f"{info}Email sent successful.")
-        return True
+        return smtp_send(config, subject, html_content)
     except FileNotFoundError:
         print(f"Error: Configuration or template file not found.")
         return False
