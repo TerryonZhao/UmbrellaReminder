@@ -21,9 +21,15 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt  # 使用 pip 安装依赖
+        pip install -r requirements.txt
 
-    - name: Inject config.json from GitHub Secret
+    - name: Load email templates from GitHub Secrets
+      run: |
+        echo '${{ secrets.MODERATE_RAIN }}' > /home/runner/work/UmbrellaReminder/UmbrellaReminder/email_templates/moderate_rain_template.html
+        echo '${{ secrets.LIGHT_RAIN }}' > /home/runner/work/UmbrellaReminder/UmbrellaReminder/email_templates/light_rain_template.html
+        echo '${{ secrets.HEAVY_RAIN }}' > /home/runner/work/UmbrellaReminder/UmbrellaReminder/email_templates/heavy_rain_template.html
+
+    - name: Inject config.json
       run: echo '${{ secrets.CONFIG_JSON }}' > config.json
 
     - name: Run UmbrellaReminder
