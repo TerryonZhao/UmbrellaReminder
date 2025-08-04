@@ -1,0 +1,4 @@
+pytz
+requests>=2.28.0
+yagmail>=0.15.293
+keyring>=23.0.0
