@@ -1,0 +1,28 @@
+name: UmbrellaReminder (Cloud)
+
+on:
+  schedule:
+    - cron: '30 5 * * *'  # Sweden Time 7:30（UTC Time 5:30）
+  workflow_dispatch:
+
+jobs:
+  run-umbrella:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Inject config.json from GitHub Secret
+      run: echo '${{ secrets.CONFIG_JSON }}' > config.json
+
+    - name: Run UmbrellaReminder
+      run: python main.py
