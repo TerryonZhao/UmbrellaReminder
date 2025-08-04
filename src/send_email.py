@@ -5,6 +5,9 @@ from email.mime.multipart import MIMEMultipart
 from typing import Dict, List
 from src.fetch_weather import load_config
 
+
+info = "Info | "
+
 def load_template(template_name: str) -> str:
     """Load the email template from the specified file
 
@@ -43,7 +46,7 @@ def render_template(template_name: str, rain_info: Dict) -> str:
             'peak_time': rain_info['peak_rain']['time'],
             'peak_amount': rain_info['peak_rain']['amount']
         }
-
+        print(f"Rendering template: {template_name}")
         return template.format(**template_data)
     except FileNotFoundError:
         print(f"Error: Template file '{template_name}' not found.")
@@ -78,10 +81,9 @@ def smtp_send(config: dict, subject: str, html_content: str) -> bool:
             server.login(email_config['sender_email'], email_config['sender_password'])
             server.send_message(email)
             server.quit()
-        print("Email sent successfully.")
         return True
-    except smtplib.SMTPConnectError:
-        print(f"SMTP Connect Error")
+    except Exception as e:
+        print(f"SMTP Connect Error: {e}")
         return False
 
 def send_rain_email(rain_info: Dict) -> bool:
@@ -104,11 +106,13 @@ def send_rain_email(rain_info: Dict) -> bool:
 
     try:
         template_name = template_map.get(worst_level)
+        print(f"{info}Loading email template {template_name} successful.")
         html_content = render_template(template_name, rain_info)
+        print(f"{info}Rendering successful.")
         config = load_config()
         subject = f"降雨提醒 - {worst_level.capitalize()} Rain"
         smtp_send(config, subject, html_content)
-        print(f"Use template: {template_name}")
+        print(f"{info}Email sent successful.")
         return True
     except FileNotFoundError:
         print(f"Error: Configuration or template file not found.")

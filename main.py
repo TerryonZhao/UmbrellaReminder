@@ -18,7 +18,6 @@ def main():
             print(f"Error processing rain data: {e}")
     else:
         print("No weather data available.\n")
-    print("<<<<<<<<<<<< New Log >>>>>>>>>>>>\n")
 
 
 if __name__ == "__main__":
