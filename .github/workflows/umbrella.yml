@@ -23,6 +23,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Create templates directory
+      run: |
+        mkdir -p /home/runner/work/UmbrellaReminder/UmbrellaReminder/email_templates
+
     - name: Load email templates from GitHub Secrets
       run: |
         echo '${{ secrets.MODERATE_RAIN }}' > /home/runner/work/UmbrellaReminder/UmbrellaReminder/email_templates/moderate_rain_template.html
