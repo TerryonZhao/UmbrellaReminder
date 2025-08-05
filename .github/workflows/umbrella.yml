@@ -2,7 +2,7 @@ name: UmbrellaReminder (Cloud)
 
 on:
   schedule:
-    - cron: '30 5 * * *'  # Sweden Time 7:30（UTC Time 5:30）
+    - cron: '10 5 * * *'  # Sweden Time 7:30（UTC Time 5:30）
   workflow_dispatch:
 
 jobs:

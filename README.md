@@ -6,11 +6,10 @@ UmbrellaReminder is a simple Python automation tool that checks the daily weathe
 
 ---
 
-##### Run automatically every day at 8 AM using a cron job or Task Scheduler.
-Change the path in [ ] to yours.
-```bash
-crontab -e
-0 7 * * * [*/python (YOUR Interpreter path)] [*main.py] >> [*/logs/daily.log] 2>&1
-crontab -l
-crontab -r
+#### UmbrellaReminder GitHub Actions Workflow
+```yaml
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch:
 ```
